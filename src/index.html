@@ -3,6 +3,7 @@
 	<head></head>
 
 	<body>
+
 		<main>
 			<section>
 				<input type='text' id='profile_name' placeholder='Enter the GitHub profile you want'/>
@@ -14,7 +15,7 @@
 		</section>
 
 		<template id='profileTemplate'>
-				<article>
+				<article id={{login}}>
 					<header>
 						<img src="{{avatar_url}}"/>
 						<h1>{{name}}</h1>
@@ -24,6 +25,7 @@
 						<strong id='followers'>{{followers}} followers</strong>
 						<strong id = 'public_repos'>{{public_repos}} public repos</strong>
 					</p>
+				<button id='profile_delete' type='button'></button>
 				</article>
 			</template>
 
@@ -37,7 +39,12 @@
 				var source = $('#profileTemplate').html();
 				var template = Handlebars.compile(source);	
 				$.get('https://api.github.com/users/' + profile_name, function(gitHubProfile) {
-					$('#profiles').append(template(gitHubProfile));
+					$('#profiles').append(template(gitHubProfile))
+					$('#'+profile_name+' '+'#profile_delete').on('click', function() { 
+						var parent = document.getElementById('profiles');
+						var child = document.getElementById(profile_name);
+						parent.removeChild(child);
+					});
 				});
 			});
 
