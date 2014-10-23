@@ -1,0 +1,1 @@
+Application that will take name of github profile and retrieve information about that profile
