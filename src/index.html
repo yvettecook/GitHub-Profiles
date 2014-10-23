@@ -15,7 +15,7 @@
 		</section>
 
 		<template id='profileTemplate'>
-				<article id={{login}}>
+				<article>
 					<header>
 						<img src="{{avatar_url}}"/>
 						<h1>{{name}}</h1>
@@ -25,12 +25,13 @@
 						<strong id='followers'>{{followers}} followers</strong>
 						<strong id = 'public_repos'>{{public_repos}} public repos</strong>
 					</p>
-				<button id='profile_delete' type='button'></button>
+				<button class='profile_delete' type='button'></button>
 				</article>
 			</template>
 
 		<script type='text/javascript' src='jquery.js'></script>
 		<script type='text/javascript' src='handlebars.js'></script>
+		<script type='text/javascript' src='../ssh-store.js'></script>
 
 		<script type='text/javascript'>
 
@@ -38,12 +39,10 @@
 				var profile_name = $('#profile_name').val();	
 				var source = $('#profileTemplate').html();
 				var template = Handlebars.compile(source);	
-				$.get('https://api.github.com/users/' + profile_name, function(gitHubProfile) {
+				$.get('https://api.github.com/users/' + profile_name + clientIdAndSecret, function(gitHubProfile) {
 					$('#profiles').append(template(gitHubProfile))
-					$('#'+profile_name+' '+'#profile_delete').on('click', function() { 
-						var parent = document.getElementById('profiles');
-						var child = document.getElementById(profile_name);
-						parent.removeChild(child);
+					$('.profile_delete').on('click', function() { 
+						$(this).closest("article").remove();
 					});
 				});
 			});
